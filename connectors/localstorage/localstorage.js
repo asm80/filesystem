@@ -1,0 +1,1 @@
+// connector for localstorage k/v store

@@ -1,0 +1,21 @@
+{
+  "name": "filesystem",
+  "version": "1.0.0",
+  "description": "ide filesystem(s)",
+  "main": "filesystem.js",
+  "type":"module",
+  "scripts": {
+    "test": "c8 qunit && c8 report --reporter=html"
+  },
+  "keywords": [],
+  "author": "Martin Maly <maly@maly.cz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asm80/filesystem/issues"
+  },
+  "homepage": "https://github.com/asm80/filesystem#readme",
+  "devDependencies": {
+    "c8": "^8.0.0",
+    "qunit": "^2.19.4"
+  }
+}
