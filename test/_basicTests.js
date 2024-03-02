@@ -12,7 +12,7 @@ export const performBasicTests = (QUnit, afs, FileSystem) => {
 
     QUnit.test("file TEST does not exists", async assert => {
         let fs = new FileSystem(afs)
-        assert.ok(await fs.exists("TEST") == false)
+        assert.ok(await fs.exists("TEST") == false, "Exists!")
     }
     )
 
@@ -20,18 +20,33 @@ export const performBasicTests = (QUnit, afs, FileSystem) => {
         let fs = new FileSystem(afs)
         assert.ok(await fs.exists("TEST") == false)
         await fs.writeFile("TEST", "test")
-        assert.ok(await fs.exists("TEST") == true)
-        assert.ok(await fs.readFile("TEST") == "test")
+        assert.ok(await fs.exists("TEST") == true, "file not exists")
+        assert.ok(await fs.readFile("TEST") == "test", "file content err")
         await fs.unlink("TEST")
         assert.ok(await fs.exists("TEST") == false)
     }
     )
 
+    QUnit.test("file TEST write, overwrite, read, unlink", async assert => {
+        let fs = new FileSystem(afs)
+        assert.ok(await fs.exists("TEST") == false)
+        await fs.writeFile("TEST", "test")
+        assert.ok(await fs.exists("TEST") == true, "file not exists")
+        assert.ok(await fs.readFile("TEST") == "test", "file content err")
+        await fs.writeFile("TEST", "2test")
+        assert.ok(await fs.exists("TEST") == true, "overwrited file not exists")
+        assert.ok(await fs.readFile("TEST") == "2test", "overwrited file content err")
+        await fs.unlink("TEST")
+        assert.ok(await fs.exists("TEST") == false)
+    }
+    )
+
+
     QUnit.test("file TEST write, read, overwrite, re-read, unlink", async assert => {
         let fs = new FileSystem(afs)
         assert.ok(await fs.exists("TEST") == false)
         await fs.writeFile("TEST", "test")
-        assert.ok(await fs.exists("TEST") == true)
+        assert.ok(await fs.exists("TEST") == true, "file not exists")
         assert.ok(await fs.readFile("TEST") == "test")
         await fs.writeFile("TEST", "test2")
         assert.ok(await fs.readFile("TEST") == "test2")
@@ -117,7 +132,7 @@ export const performBasicTests = (QUnit, afs, FileSystem) => {
 
     QUnit.test("file TEST does not exists, unlink", async assert => {
         let fs = new FileSystem(afs)
-        assert.ok(await fs.exists("TEST") == false)
+        assert.ok(await fs.exists("TEST") == false, "file exists")
         await asyncThrows(assert, () => fs.unlink("TEST"))
     }
     )
