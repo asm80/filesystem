@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "ide filesystem(s)",
   "main": "filesystem.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "c8 qunit && c8 report --reporter=html"
   },
@@ -16,6 +16,7 @@
   "homepage": "https://github.com/asm80/filesystem#readme",
   "devDependencies": {
     "c8": "^8.0.0",
+    "fake-indexeddb": "^5.0.2",
     "qunit": "^2.19.4"
   }
 }
