@@ -9,5 +9,5 @@ import { FileSystem } from "../filesystem.js";
 
 import { performBasicTests } from "./_basicTests.js";
 
-QUnit.module('Memory proxy');
+QUnit.module('Memory FS');
 performBasicTests(QUnit, afs, FileSystem)
