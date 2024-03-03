@@ -41,10 +41,12 @@ export class IDBFS {
                     if (typeof e == "undefined") return reject("File not found");
                     resolve(event.target.result.data);
                 };
+                /*
                 dataRequest.onerror = function(event) {
                     
                     reject(event.target.error);
                 }
+                */
 
             })
         })
@@ -59,9 +61,6 @@ export class IDBFS {
                 dataRequest.onsuccess = function(event) {
                     resolve(event.target.result.data);
                 };
-                dataRequest.onerror = function(event) {
-                    reject(event.target.error);
-                }
 
             })
         })
@@ -79,9 +78,6 @@ export class IDBFS {
                     if (e) resolve(true);
                     else resolve(false);
                 };
-                dataRequest.onerror = function(event) {
-                    resolve(false);
-                }
 
             })
         })     
@@ -104,13 +100,7 @@ export class IDBFS {
                     delRequest.onsuccess = function(event) {
                         resolve(true);
                     }
-                    delRequest.onerror = function(event) {
-                        reject(event.target.error);
-                    }
                 };
-                dataRequest.onerror = function(event) {
-                    resolve(false);
-                }
 
             })
         })     
@@ -136,9 +126,6 @@ export class IDBFS {
                 dataRequest.onsuccess = function(event) {
                     resolve(event.target.result);
                 };
-                dataRequest.onerror = function(event) {
-                    reject(event.target.error);
-                }
 
             })
         })     
@@ -151,12 +138,11 @@ export class IDBFS {
                 const store = tx.objectStore('files');
                 let dataRequest = store.get(name);
                 dataRequest.onsuccess = function(event) {
-                    resolve(event.target.result.mtime);
+                    let e = event.target.result
+                    if (typeof e == "undefined") return reject("File not found");
+                    resolve(e.mtime);
                 };
-                dataRequest.onerror = function(event) {
-                    reject(event.target.error);
-                }
-
+ 
             })
         })
     }

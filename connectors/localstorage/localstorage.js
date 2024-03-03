@@ -51,7 +51,9 @@ export class LocalStorageFS {
     }
 
     async readdir() {
-        return Object.keys(this.#fs);
+        let nk = Object.keys(this.#fs);
+        //filtering out _metas, getItem, setItem, removeItem
+        return nk.filter((item) => !["getItem","setItem","removeItem","_metas"].includes(item));
     }
 
     async mtime(name) {

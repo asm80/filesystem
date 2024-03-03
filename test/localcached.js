@@ -3,6 +3,7 @@ QUnit.config.hidepassed = true;
 
 //import { MemoryFS } from "../connectors/memory/memory.js";
 import { LocalStorageFS } from "../connectors/localstorage/localstorage.js";
+import { CacheFS } from "../connectors/cache/cache.js";
 
 //localstorage fast emu for testing
 
@@ -17,18 +18,15 @@ ls.removeItem = function(name) {
     delete this[name]
 }
 
-QUnit.test("not available storage", assert => {
-    assert.throws(() => {
-        let afs = new LocalStorageFS(nonexisting)
-    })
-}
-)
 
-let afs = new LocalStorageFS(ls)
+let bfs = new LocalStorageFS(ls)
+
+let afs = new CacheFS(bfs)
 
 import { FileSystem } from "../filesystem.js";
 
 import { performBasicTests } from "./_basicTests.js";
+import { performCachedBasicTests } from "./_cachedBasicTests.js";
 
-QUnit.module('Local storage');
-performBasicTests(QUnit, afs, FileSystem)
+QUnit.module('Cached local storage');
+performCachedBasicTests(QUnit, afs, FileSystem, bfs)

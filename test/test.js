@@ -4,7 +4,7 @@ import QUnit from "qunit";
 QUnit.config.hidepassed = true;
 
 import { asyncThrows } from "./_asyncThrows.js";
-import { fileSystem as afs } from "./_asyncFilesystem.js";
+import { AsyncFileSystem } from "./_asyncFilesystem.js";
 
 /*
 QUnit.test("Unrecognized instruction 4", async assert => {
@@ -18,6 +18,8 @@ QUnit.test("Unrecognized instruction 4", async assert => {
 import { FileSystem } from "../filesystem.js";
 
 import { performBasicTests } from "./_basicTests.js";
+
+let afs = new AsyncFileSystem("./test/suite/")
 
 QUnit.module('AFS proxy');
 performBasicTests(QUnit, afs, FileSystem)

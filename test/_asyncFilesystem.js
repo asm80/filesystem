@@ -2,52 +2,62 @@
 
 import {promises as fs} from "fs";
 
-export const fileSystem = {
-    readFile: async (name) => {
-        //console.log("readFile",name, process.cwd(), fs.readFileSync("./test/suite/"+name, "utf-8"))
-        return fs.readFile("./test/suite/"+name, "utf-8")
-    },
-    writeFile: async (name, data) => {
-        return fs.writeFile("./test/suite/"+name, data)
-    },
-    exists: async (name) => {
-        let fn = "./test/suite/"+name
+const namefix = (name) => encodeURIComponent(name).replace(/\./g, "%2E")
+
+export class AsyncFileSystem {
+    #internalPath;
+    constructor (path) {
+        this.#internalPath = path
+    }
+    async readFile (name) {
+        //console.log("readFile",name, process.cwd(), fs.readFileSync(this.#internalPath+namefix(name), "utf-8"))
+        return fs.readFile(this.#internalPath+namefix(name), "utf-8")
+    }
+    async writeFile (name, data) {
+        return fs.writeFile(this.#internalPath+namefix(name), data)
+    }
+    async exists (name) {
+        let fn = this.#internalPath+namefix(name)
         try {
             await fs.stat(fn);
             return true;
           } catch {
             return false;
           }
-    },
-    unlink: async (name) => {
-        return fs.unlink("./test/suite/"+name)
-    },
-    rename: async (name, newName) => {
-        return fs.rename("./test/suite/"+name, "./test/suite/"+newName)
-    },
-    copyFile: async (name, newName) => {
-        return fs.copyFile("./test/suite/"+name, "./test/suite/"+newName)
-    },
+    }
+    async unlink (name) {
+        return fs.unlink(this.#internalPath+namefix(name))
+    }
+    async rename (name, newName) {
+        return fs.rename(this.#internalPath+namefix(name), this.#internalPath+namefix(newName))
+    }
+    async copyFile (name, newName) {
+        return fs.copyFile(this.#internalPath+namefix(name), this.#internalPath+namefix(newName))
+    }
     /*
-    stat: async (name) => {
-        return fs.stat("./test/suite/"+name)
-    },
+    async stat (name) {
+        return fs.stat(this.#internalPath+namefix(name))
+    }
     */
-    size: async (name) => {
-        let stat = await fs.stat("./test/suite/"+name)
+    async size (name) {
+        let stat = await fs.stat(this.#internalPath+namefix(name))
         return stat?stat.size:null
-    },
-    mkdir: async (name) => {
-        return fs.mkdir("./test/suite/"+name)
-    },
-    rmdir: async (name) => {
-        return fs.rmdir("./test/suite/"+name)
-    },
-    readdir: async (name) => {
-        return fs.readdir("./test/suite/"+name)
-    },
-    mtime: async (name) => {
-        let mtime = await fs.stat("./test/suite/"+name).mtime
-        return new Date().getTime(mtime)
+    }
+
+    async readdir () {
+        let files = await fs.readdir("./test/suite/")
+        //fix file names back from encodeURIComponent
+        files = files.map((file) => decodeURIComponent(file))
+        return files
+    }
+    async mtime (name) {
+        try {
+            let stat = await fs.stat(this.#internalPath+namefix(name))
+            let mtime = stat.mtime
+            return new Date().getTime(mtime)
+        } catch (e) {
+            throw new Error("File not found")
+            return null
+        }
     }
 }
