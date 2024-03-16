@@ -84,7 +84,7 @@ export class FileSystem {
         //removing leading /
         fulldir = fulldir.map((item) => item.startsWith("/")?item.slice(1):item)
         //if there is something after /, simply remove all after /
-        fulldir = fulldir.map((item) => item.split("/")[0])
+        fulldir = fulldir.map((item) => item.split("/")[0]+"/")
 
         return fulldir
     }
