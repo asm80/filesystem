@@ -89,6 +89,7 @@ export class FileSystem {
 			if (item.indexOf("/")>=0) {
 				item.split("/")[0]+"/"
 			}
+			return item
 		})
 
         return fulldir
