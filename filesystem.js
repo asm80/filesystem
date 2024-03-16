@@ -87,7 +87,7 @@ export class FileSystem {
         //if there is something after /, simply remove all after /
         fulldir = fulldir.map((item) => {
 			if (item.indexOf("/")>=0) {
-				item.split("/")[0]+"/"
+				item = item.split("/")[0]+"/"
 			}
 			return item
 		})
