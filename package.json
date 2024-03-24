@@ -1,6 +1,6 @@
 {
   "name": "@asm80/filesystem",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "ide filesystem(s)",
   "main": "filesystem.js",
   "type": "module",
