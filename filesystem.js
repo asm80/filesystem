@@ -75,22 +75,24 @@ export class FileSystem {
         return await this.#conn.size(name)
     }
 
-    async readdir(name) {
+    async readdir(name, fullnames=false, fullpath=false) {
         let fulldir = await this.#conn.readdir()
         //filtering out names, which does not starts with name
         fulldir = fulldir.filter((item) => item.startsWith(name))
         //removing name from the beginning of each name
-        fulldir = fulldir.map((item) => item.slice(name.length))
+        if (!fullpath) fulldir = fulldir.map((item) => item.slice(name.length))
         //removing leading /
         fulldir = fulldir.map((item) => item.startsWith("/")?item.slice(1):item)
 		
         //if there is something after /, simply remove all after /
+		if (!fullnames) {
         fulldir = fulldir.map((item) => {
 			if (item.indexOf("/")>=0) {
 				item = item.split("/")[0]+"/"
 			}
 			return item
 		})
+		}
 
         return fulldir
     }
